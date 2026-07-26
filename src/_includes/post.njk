@@ -1,0 +1,61 @@
+---
+layout: base.njk
+---
+
+<div class="reading-progress" id="readingProgress"></div>
+
+<div class="page-header">
+  <div class="container">
+    <a href="/insights/" class="post-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to Market Insights
+    </a>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+    <article class="post-page">
+      <div class="post-header reveal">
+        <div class="post-meta-bar">
+          {% if category %}
+          <span class="category-badge badge-{{ category | slug }}">{{ category }}</span>
+          {% endif %}
+          <span class="date">{{ date | dateFormat }}</span>
+          <span class="reading-time">{{ content | readingTime }}</span>
+        </div>
+        <h1>{{ title }}</h1>
+        {% if summary %}
+        <p class="post-summary">{{ summary }}</p>
+        {% endif %}
+      </div>
+
+      {% if image %}
+      <img src="{{ image }}" alt="{{ title }}" style="width:100%;border-radius:var(--radius-lg);margin-bottom:40px;box-shadow:var(--shadow-md);" />
+      {% endif %}
+
+      <div class="post-body reveal reveal-delay-1">
+        {{ content | safe }}
+      </div>
+
+      <div class="post-disclaimer reveal">
+        <strong>Educational Disclaimer</strong>
+        <p>This post is for educational purposes only and is not financial, investment, tax, or legal advice.</p>
+      </div>
+    </article>
+  </div>
+</main>
+
+<script>
+  // Reading progress bar
+  window.addEventListener('scroll', () => {
+    const article = document.querySelector('.post-page');
+    if (!article) return;
+    const articleTop = article.offsetTop;
+    const articleHeight = article.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scrolled = window.scrollY - articleTop + windowHeight;
+    const progress = Math.min(Math.max(scrolled / articleHeight * 100, 0), 100);
+    document.getElementById('readingProgress').style.width = progress + '%';
+  }, { passive: true });
+</script>

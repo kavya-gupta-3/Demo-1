@@ -1,0 +1,94 @@
+---
+layout: base.njk
+title: "Market Insights | Michael's Investment Club"
+description: "Michael's posts on markets, economics, investing, and financial literacy."
+---
+
+<div class="page-header">
+  <div class="container">
+    <span class="eyebrow">Michael's Writing</span>
+    <h1>Market Insights</h1>
+    <p class="lead">Short observations on investing, companies, economic developments, and financial literacy.</p>
+  </div>
+</div>
+
+<main>
+  <div class="container" style="padding-top:60px;padding-bottom:80px;">
+
+    <div class="category-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="market-insights">Market Insights</button>
+      <button class="filter-btn" data-filter="financial-literacy">Financial Literacy</button>
+      <button class="filter-btn" data-filter="investment-club">Investment Club</button>
+      <button class="filter-btn" data-filter="fundraising--impact">Fundraising & Impact</button>
+    </div>
+
+    <div class="post-grid" id="postGrid">
+      {%- for post in collections.posts | sortByDate %}
+      <a class="post-card reveal{% if loop.index > 1 %} reveal-delay-{{ loop.index - 1 }}{% endif %}" href="{{ post.url }}" data-category="{{ post.data.category | slug if post.data.category else 'market-insights' }}">
+        <div class="post-card-image placeholder">
+          <span class="placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </span>
+          {% if post.data.category %}
+          <span class="category-badge badge-{{ post.data.category | slug }}">{{ post.data.category }}</span>
+          {% else %}
+          <span class="category-badge badge-market-insights">Market Insights</span>
+          {% endif %}
+        </div>
+        <div class="post-card-body">
+          <div class="post-card-meta">
+            <span>{{ post.data.date | dateFormat }}</span>
+            <span class="dot"></span>
+            <span>{{ post.templateContent | readingTime }}</span>
+          </div>
+          <h3>{{ post.data.title }}</h3>
+          <p>{{ post.data.summary }}</p>
+          <span class="read-more">Read article
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </a>
+      {%- endfor %}
+    </div>
+
+    {%- if collections.posts.length == 0 %}
+    <div style="text-align:center;padding:60px 0;color:var(--muted);">
+      <p style="font-size:1.15rem;">No articles published yet. Check back soon!</p>
+    </div>
+    {%- endif %}
+
+  </div>
+</main>
+
+<script>
+  // Category filter functionality
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const postCards = document.querySelectorAll('.post-card[data-category]');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      postCards.forEach((card, i) => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = '';
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 50 + i * 80);
+        } else {
+          card.style.transition = 'opacity 0.2s ease';
+          card.style.opacity = '0';
+          setTimeout(() => { card.style.display = 'none'; }, 200);
+        }
+      });
+    });
+  });
+</script>
