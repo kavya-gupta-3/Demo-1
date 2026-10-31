@@ -224,6 +224,7 @@ export class Engine {
     p.chroma = 0.15 + tr * 1.6 + raging * 1.8;
     p.glitch = (tr > 0.35 ? (tr - 0.35) * 1.1 : 0) + (reduced ? 0 : raging * (0.35 + 0.3 * Math.sin(time * 23)));
     p.flash = this.flash * 0.6;
+    p.warp = reduced ? 0 : Math.pow(tr, 1.6) * 0.9;
     p.tint.set(0, 0, 0);
     for (let i = 0; i < STAGE_COUNT; i++) {
       const w = d.weights[i];

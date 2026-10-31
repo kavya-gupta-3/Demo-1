@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "KAVYA GUPTA — a full-3D, dragon-themed personal website: seven procedural dragons, custom GLSL, scroll-driven choreography.",
+  "description": "KAVYA GUPTA \u2014 a full-3D, dragon-themed personal website: seven procedural dragons, custom GLSL, scroll-driven choreography.",
   "author": "Kavya Gupta",
   "license": "UNLICENSED",
   "scripts": {
@@ -11,7 +11,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run build"
+    "check": "npm run typecheck && npm test && npm run build",
+    "test": "node --experimental-strip-types --no-warnings --test tests/*.test.ts"
   },
   "engines": {
     "node": ">=20.19"

@@ -19,7 +19,7 @@ const b = new Vector3();
  * strikes when provoked. Moves in snappy, robotic bursts.
  */
 export class Volt extends Dragon {
-  readonly lightning = new Lightning(14, 24, new Color(0.35, 0.85, 1.0));
+  readonly lightning = new Lightning(20, 24, new Color(0.45, 0.9, 1.0));
   private arcTimer = 0;
   private strikeTimer = 2;
   private burstPhase = 0;
@@ -97,15 +97,17 @@ export class Volt extends Dragon {
 
     // arcs between neighbouring plates
     this.arcTimer -= dt;
-    if (this.arcTimer <= 0) {
-      this.arcTimer = 0.07 + Math.random() * 0.12;
+    while (this.arcTimer <= 0) {
+      this.arcTimer += 0.04 + Math.random() * 0.08;
       const s0 = Math.random() * VOLT.length * 0.85;
+      const r = VOLT.profile(s0 / VOLT.length) * 1.6;
       this.spine.sample(s0, a);
-      this.spine.sample(s0 + 0.8 + Math.random() * 1.6, b);
-      a.x += (Math.random() - 0.5) * 1.2;
-      a.y += (Math.random() - 0.5) * 1.2;
-      b.z += (Math.random() - 0.5) * 1.2;
-      this.lightning.strike(a, b, { life: 0.12 + Math.random() * 0.1, width: 1.6 + this.rage * 2, rough: 0.35 });
+      this.spine.sample(s0 + 0.9 + Math.random() * 2.2, b);
+      a.x += (Math.random() - 0.5) * r;
+      a.y += (Math.random() - 0.2) * r;
+      b.y += (Math.random() - 0.2) * r;
+      b.z += (Math.random() - 0.5) * r;
+      this.lightning.strike(a, b, { life: 0.16 + Math.random() * 0.14, width: 2.6 + this.rage * 3, rough: 0.4 });
     }
     // distant storm strikes
     this.strikeTimer -= dt;

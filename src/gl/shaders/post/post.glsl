@@ -106,6 +106,7 @@ uniform vec3 uTint;
 uniform vec3 uLift;
 uniform float uSaturation;
 uniform float uScan;
+uniform float uWarp;
 
 vec3 aces(vec3 x) {
   return sat((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14));
@@ -137,6 +138,19 @@ void main() {
   bloom.r = texture2D(tBloom, uv + off * 1.5).r;
   bloom.g = texture2D(tBloom, uv).g;
   bloom.b = texture2D(tBloom, uv - off * 1.5).b;
+  // warp: radial streaks toward the centre while flying between worlds
+  if (uWarp > 0.002) {
+    vec2 toC = vec2(0.5) - uv;
+    vec3 acc = vec3(0.0);
+    float wsum = 0.0;
+    for (int i = 0; i < 10; i++) {
+      float t = float(i) / 9.0;
+      float w = 1.0 - t * 0.75;
+      acc += texture2D(tScene, uv + toC * t * 0.11 * uWarp).rgb * w;
+      wsum += w;
+    }
+    col = mix(col, acc / wsum, sat(uWarp * 1.4));
+  }
   col += bloom * uBloom;
   col = col * uExposure * uTint + uLift;
   col += uFlash * vec3(0.75, 0.85, 1.0);

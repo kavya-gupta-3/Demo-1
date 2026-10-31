@@ -71,6 +71,7 @@ export class PostFX {
     radius: 1.0,
     tint: new Vector3(1, 1, 1),
     lift: new Vector3(0, 0, 0),
+    warp: 0,
   };
 
   constructor(private readonly renderer: WebGLRenderer, msaa: number, levels: number) {
@@ -110,6 +111,7 @@ export class PostFX {
       uLift: { value: new Vector3() },
       uSaturation: { value: 1 },
       uScan: { value: 0.3 },
+      uWarp: { value: 0 },
     });
   }
 
@@ -179,6 +181,7 @@ export class PostFX {
     c.uTime.value = time;
     c.uSaturation.value = p.saturation;
     c.uScan.value = p.scan;
+    c.uWarp.value = p.warp;
     c.uTint.value.copy(p.tint);
     c.uLift.value.copy(p.lift);
     this.blit(this.composite, null);

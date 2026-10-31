@@ -35,6 +35,7 @@ motion and power — choreographed by scroll.
   hobby driving a live equaliser). Zero audio files.
 - **Canvas 2D** — generative project cover art and the *Ember Hunt* mini-game
 - **Vercel Edge Functions** (`/api`) — contact form, live GitHub stats, visitor pulse
+- **PWA** — hand-written service worker: installable, opens offline
 - Build-time HTML rendering: every word of the page is static HTML (fast, SEO,
   works without JavaScript), then upgraded by the 3D layer
 
@@ -45,7 +46,8 @@ npm install
 npm run dev        # http://localhost:5173 — the /api functions run inside Vite too
 npm run build      # → dist/
 npm run preview
-npm run check      # typecheck + build
+npm test           # age / college-year logic across future dates
+npm run check      # typecheck + tests + build
 ```
 
 Handy URL flags: `?q=low|medium|high` force a quality tier, `?skip` skips the
@@ -65,6 +67,9 @@ Things that update themselves:
   2026–27. It moves to the next year every **1 June** (after exams and results)
   and shows **"BCA graduate · Class of 2029"** from 1 June 2029 onward.
 - The copyright year.
+
+`tests/profile.test.ts` pins these rules down (including the midnight-IST
+boundaries), and CI runs it on every push.
 
 ## Deploy (Vercel)
 
