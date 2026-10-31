@@ -1051,6 +1051,7 @@
 }
 .pro-list {
   border-top: 1px solid var(--line);
+  background: linear-gradient(90deg, rgba(6, 5, 9, 0.72), rgba(6, 5, 9, 0.45));
 }
 .pro-row {
   position: relative;

@@ -14,6 +14,7 @@ import {
   type Scene,
   type Texture,
   type WebGLRenderer,
+  UnsignedByteType,
 } from 'three';
 import postSource from './shaders/post/post.glsl';
 
@@ -28,9 +29,12 @@ function pass(define: string, uniforms: Record<string, { value: unknown }>) {
   });
 }
 
+/** Half-float when the GPU can render to it (HDR bloom), 8-bit otherwise. */
+let colorType: typeof HalfFloatType | typeof UnsignedByteType = HalfFloatType;
+
 function target(w: number, h: number, samples = 0) {
   return new WebGLRenderTarget(w, h, {
-    type: HalfFloatType,
+    type: colorType,
     format: RGBAFormat,
     minFilter: LinearFilter,
     magFilter: LinearFilter,
@@ -55,6 +59,8 @@ export class PostFX {
   private readonly upMat: ShaderMaterial;
   readonly composite: ShaderMaterial;
   private levels: number;
+  /** MSAA samples actually in use (0 when the GPU can't multisample HDR). */
+  readonly samples: number;
   enabledBloom = true;
 
   readonly params = {
@@ -75,6 +81,11 @@ export class PostFX {
   };
 
   constructor(private readonly renderer: WebGLRenderer, msaa: number, levels: number) {
+    const ext = renderer.extensions;
+    const hdr = ext.has('EXT_color_buffer_float') || ext.has('EXT_color_buffer_half_float');
+    colorType = hdr ? HalfFloatType : UnsignedByteType;
+    if (!hdr) msaa = 0;
+    this.samples = msaa;
     this.levels = levels;
     this.scene = target(2, 2, msaa);
     const geo = new BufferGeometry();

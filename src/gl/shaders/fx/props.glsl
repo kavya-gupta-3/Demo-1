@@ -33,11 +33,11 @@ void main() {
   vSeed = 0.0;
 #elif defined(CRYSTAL)
   vec3 r = aSeed.xyz;
-  vec3 pos = uCenter + vec3((r.x - 0.5) * 46.0, (r.y - 0.5) * 26.0, -10.0 - r.z * 22.0);
+  vec3 pos = uCenter + vec3((r.x - 0.5) * 50.0, (r.y - 0.5) * 28.0, -14.0 - r.z * 24.0);
   pos.y += sin(uTime * 0.4 + aSeed.w * 6.28) * 0.8 + uBurst * (r.y - 0.3) * 6.0;
   vec3 axis = normalize(r - 0.5 + 0.01);
   mat3 R = rotAxis(axis, uTime * (0.15 + r.x * 0.3) + aSeed.w * 6.0);
-  float s = (0.4 + r.z * 1.4) * uWeight;
+  float s = (0.3 + r.z * 1.0) * uWeight;
   vec4 w = vec4(pos + R * (position * vec3(1.0, 2.2, 1.0) * s), 1.0);
   vNormal = R * normal;
   vSeed = aSeed.w;

@@ -97,7 +97,7 @@ export async function boot() {
       engine.factory.dispose();
       loader.line('fonts :: cinzel · chakra petch · jetbrains mono');
       await Promise.race([document.fonts.load('900 100px Cinzel'), new Promise((r) => setTimeout(r, 2500))]);
-      title = new TitlePlane(quality.msaa > 0);
+      title = new TitlePlane(engine.post.samples > 0);
       engine.scene.add(title.mesh);
       engine.systems.push(title);
       const ambient = new Ambient(quality.particles);
