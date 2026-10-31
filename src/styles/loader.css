@@ -1,0 +1,181 @@
+/* ------------------------------------------------------------------ loader */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(70% 60% at 50% 45%, #120a0a, #040305 70%);
+  color: var(--ink);
+  overflow: hidden;
+}
+.loader.is-leaving {
+  pointer-events: none;
+}
+.ld-grid {
+  position: absolute;
+  inset: -2px;
+  background:
+    linear-gradient(rgba(255, 106, 26, 0.07) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(90deg, rgba(255, 106, 26, 0.07) 1px, transparent 1px) 0 0 / 56px 56px;
+  mask-image: radial-gradient(60% 55% at 50% 50%, #000 20%, transparent 75%);
+  animation: ld-grid 9s linear infinite;
+}
+@keyframes ld-grid {
+  to {
+    background-position: 0 56px, 56px 0;
+  }
+}
+.ld-core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: min(520px, calc(100vw - 32px));
+}
+.ld-sigil {
+  width: clamp(110px, 18vw, 156px);
+  aspect-ratio: 1;
+  filter: drop-shadow(0 0 22px rgba(255, 106, 26, 0.55));
+}
+.ld-mark {
+  width: 100%;
+  height: 100%;
+  --sigil-0: #fff0c4;
+  --sigil-1: #ff9a2e;
+  --sigil-2: #ff2f1f;
+}
+.ld-mark .sigil-frame,
+.ld-mark .sigil-frame-inner {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: ld-draw 1.6s var(--ease-out) forwards;
+}
+.ld-mark .sigil-frame-inner {
+  animation-delay: 0.25s;
+}
+.ld-mark .sigil-body path {
+  opacity: 0;
+  transform-origin: 60px 60px;
+  animation: ld-pop 0.9s var(--ease-out) forwards;
+}
+.ld-mark .sigil-body path:nth-child(1) { animation-delay: 0.7s; }
+.ld-mark .sigil-body path:nth-child(2) { animation-delay: 0.75s; }
+.ld-mark .sigil-body path:nth-child(3) { animation-delay: 0.6s; }
+.ld-mark .sigil-body path:nth-child(4) { animation-delay: 0.5s; }
+.ld-mark .sigil-body path:nth-child(5) { animation-delay: 0.85s; }
+.ld-mark .sigil-body path:nth-child(6) { animation-delay: 0.95s; }
+.ld-mark .sigil-body path:nth-child(7) { animation-delay: 1.05s; }
+.ld-mark .sigil-bones,
+.ld-mark .sigil-eye {
+  opacity: 0;
+  animation: ld-fade 0.6s 1.2s forwards;
+}
+@keyframes ld-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ld-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes ld-fade {
+  to {
+    opacity: 1;
+  }
+}
+.ld-name {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
+  background: linear-gradient(180deg, #fff3d2, #ff9a2e 60%, #c2280f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ld-name span {
+  margin-left: 0.5em;
+}
+.ld-meter {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.ld-meter i {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+  background: linear-gradient(90deg, #ff2f1f, #ff9a2e, #fff0c4);
+  box-shadow: 0 0 18px #ff9a2e;
+  transition: transform 0.4s var(--ease-out);
+}
+.ld-pct {
+  font-size: 0.8rem;
+  color: #ffb36b;
+}
+.ld-pct span {
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+}
+.ld-log {
+  width: 100%;
+  height: 7.6em;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-size: 0.62rem;
+  line-height: 1.55;
+  color: rgba(255, 190, 140, 0.6);
+  mask-image: linear-gradient(transparent, #000 45%);
+}
+.ld-log li::before {
+  content: '> ';
+  color: #ff6a1a;
+}
+.ld-log li.ok::after {
+  content: ' ok';
+  color: #7dffb0;
+}
+.ld-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+.ld-actions[hidden] {
+  display: none;
+}
+.ld-foot {
+  position: absolute;
+  bottom: 22px;
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: rgba(255, 190, 140, 0.35);
+  font-size: 0.6rem;
+}
+@media (max-width: 640px) {
+  .ld-foot span:nth-child(2) {
+    display: none;
+  }
+}

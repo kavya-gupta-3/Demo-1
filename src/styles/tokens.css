@@ -1,0 +1,55 @@
+/* ------------------------------------------------------------------ tokens */
+
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ff6a1a;
+}
+@property --accent2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffc56a;
+}
+@property --sweep {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+:root {
+  --bg: #050407;
+  --bg-2: #0b0910;
+  --ink: #f4efe6;
+  --ink-2: rgba(244, 239, 230, 0.74);
+  --dim: rgba(244, 239, 230, 0.5);
+  --faint: rgba(244, 239, 230, 0.14);
+  --line: rgba(244, 239, 230, 0.1);
+  --accent: #ff6a1a;
+  --accent2: #ffc56a;
+  --glow: color-mix(in oklab, var(--accent) 55%, transparent);
+  --panel: rgba(9, 8, 13, 0.58);
+  --panel-solid: rgba(9, 8, 13, 0.92);
+
+  --f-display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --f-ui: 'Chakra Petch', 'Segoe UI', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --gutter: clamp(16px, 4vw, 64px);
+  --rail: clamp(0px, 5vw, 92px);
+  --maxw: 1360px;
+  --notch: 14px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+  --hud-h: 64px;
+
+  transition: --accent 1.1s var(--ease-out), --accent2 1.1s var(--ease-out);
+}
+
+/* per-dragon accents, switched by JS on <html data-stage> */
+:root[data-stage='0'] { --accent: #ff6a1a; --accent2: #ffc56a; }
+:root[data-stage='1'] { --accent: #ff2bd6; --accent2: #2bf0ff; }
+:root[data-stage='2'] { --accent: #22e4ff; --accent2: #8a6bff; }
+:root[data-stage='3'] { --accent: #1bf28e; --accent2: #c8ff6a; }
+:root[data-stage='4'] { --accent: #ffc53d; --accent2: #fff0b8; }
+:root[data-stage='5'] { --accent: #a76bff; --accent2: #ff7ad9; }
+:root[data-stage='6'] { --accent: #ff2a4d; --accent2: #ff8a3d; }
