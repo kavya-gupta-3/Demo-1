@@ -23,6 +23,8 @@ export interface FrameInput {
   dt: number;
   /** Unclamped frame time, for the fps readout and the resolution governor. */
   rawDt: number;
+  /** Page scroll position in CSS pixels. */
+  scrollY: number;
   stage: number;
   locals: number[];
   chapter: number;
@@ -104,6 +106,7 @@ export class Engine {
       quality,
       aspect: 1,
       pixelRatio: 1,
+      heroLift: 0,
     };
     this.resize();
   }
@@ -115,7 +118,8 @@ export class Engine {
 
   resize() {
     const w = window.innerWidth;
-    const h = window.innerHeight;
+    // match the CSS size of the canvas (100lvh on phones)
+    const h = Math.max(window.innerHeight, this.canvas.clientHeight || 0);
     this.width = w;
     this.height = h;
     const dpr = Math.min(this.quality.maxDpr, window.devicePixelRatio || 1) * this.renderScale;
@@ -128,6 +132,8 @@ export class Engine {
 
   /** Adaptive resolution: trims render scale when frames run long. */
   private govern(dt: number, time: number) {
+    // a tab switch or a GC pause is not a slow GPU
+    if (dt > 0.25) return;
     this.frameTimes.push(dt);
     if (this.frameTimes.length > 45) this.frameTimes.shift();
     const avg = this.frameTimes.reduce((a, b) => a + b, 0) / this.frameTimes.length;
@@ -189,6 +195,10 @@ export class Engine {
     ctx.chapter = input.chapter;
     ctx.aspect = aspect;
     ctx.pixelRatio = this.renderer.getPixelRatio();
+    // hero framing distance → world units per CSS pixel at the title's depth
+    const heroDist = aspect < 1 ? 17 * 1.55 : aspect < 1.35 ? 17 * 1.2 : 17;
+    const worldPerPx = (2 * heroDist * Math.tan((40 * Math.PI) / 360)) / this.height;
+    ctx.heroLift = Math.min(input.scrollY, this.height * 1.5) * worldPerPx;
     for (let i = 0; i < STAGE_COUNT; i++) {
       const dragon = this.dragons[i];
       if (!dragon) continue;

@@ -26,7 +26,8 @@ void main() {
   float n = fbmLite(vec3(vUv * vec2(9.0, 3.0), uTime * 0.25));
   // burn front sweeps diagonally, ragged by noise
   float front = vUv.x * 0.35 + (1.0 - vUv.y) * 0.2 + n * 0.22;
-  float burn = uBurn * 1.3 - 0.05;
+  // front spans ≈ 0‥0.77; map the scroll-driven burn across exactly that range
+  float burn = uBurn * 0.86 - 0.06;
   float alive = smoothstep(burn - 0.015, burn + 0.015, front);
   float edge = (1.0 - smoothstep(0.0, 0.07, abs(front - burn))) * step(0.001, uBurn);
   // load-in: letters condense left to right

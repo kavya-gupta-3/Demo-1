@@ -40,7 +40,8 @@
   margin-top: 18px;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(3.2rem, 11vw, 10.5rem);
+  /* big, but never wider than the column: Cinzel caps average ≈ 0.8em */
+  font-size: min(clamp(2.4rem, 11vw, 10.5rem), calc((100vw - 2 * var(--gutter) - var(--rail)) / (var(--len, 8) * 0.8)));
   line-height: 0.88;
   letter-spacing: 0.02em;
   perspective: 600px;
@@ -92,7 +93,7 @@
   grid-template-rows: 1fr auto 1fr;
   justify-items: center;
   text-align: center;
-  padding: var(--hud-h) 0 0;
+  padding: var(--hud-h) 0 110px;
 }
 .eyebrow {
   align-self: end;
@@ -107,6 +108,7 @@
 /* the 3D title publishes its on-screen size/offset so the DOM wraps it exactly */
 .gl-title .origin-hero {
   padding-top: 0;
+  padding-bottom: 0;
 }
 .gl-title .hero-title {
   min-height: var(--title-h, 22vh);
@@ -1531,6 +1533,28 @@
   }
   .hero-stats li:nth-last-child(-n + 2) {
     border-bottom: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .scroll-cue {
+    display: none;
+  }
+  .hero-role {
+    margin-top: 2.2vh;
+  }
+  .hobby-copy {
+    padding: 18px;
+    margin: 0 -18px;
+    background: linear-gradient(180deg, rgba(5, 4, 7, 0.62), rgba(5, 4, 7, 0.35));
+  }
+  .stage p,
+  .stage li,
+  .stage h3 {
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.85);
+  }
+  .dream {
+    padding-left: 42px;
   }
 }
 

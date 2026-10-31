@@ -24,4 +24,6 @@ export interface FrameContext {
   aspect: number;
   /** Current renderer pixel ratio (for point sizes). */
   pixelRatio: number;
+  /** World units the hero content has scrolled up (so 3D can ride with the page). */
+  heroLift: number;
 }

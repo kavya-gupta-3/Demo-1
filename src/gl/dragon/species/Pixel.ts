@@ -87,7 +87,7 @@ export class Pixel extends Dragon {
     // swim in a playful loop on the right of the current level
     const portrait = ctx.aspect < 1;
     // circle the hobby visual on the right half of the screen
-    this.focus.set(center.x + lerp(-6, 6, chapter / 4) * 0.6 + (portrait ? 0 : 6.2), center.y + (portrait ? -2.4 : 0.3), center.z - 2);
+    this.focus.set(center.x + lerp(-6, 6, chapter / 4) * 0.6 + (portrait ? 0 : 6.2), center.y + (portrait ? -4.2 : 0.3), center.z - (portrait ? 5 : 2));
     this.uHead += dt * (3.4 + this.rage * 5);
     const f = this.focus;
     const rx = portrait ? 3.6 : 4.6;

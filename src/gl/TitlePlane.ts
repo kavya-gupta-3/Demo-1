@@ -119,7 +119,7 @@ export class TitlePlane {
     }
     this.mesh.scale.set(w, h, 1);
     // tell the DOM how tall the letters are on screen (glyph band ≈ 72% of the plane)
-    const px = (h / visH) * window.innerHeight * (stack ? 0.86 : 0.72);
+    const px = (h / visH) * window.innerHeight * (stack ? 1.0 : 0.72);
     document.documentElement.style.setProperty('--title-h', `${Math.round(px)}px`);
   }
 
@@ -129,7 +129,7 @@ export class TitlePlane {
     u.uReveal.value = clamp(this.reveal);
     u.uBurn.value = smoothstep(0.02, 0.36, f.locals[0] ?? 0);
     this.mesh.visible = f.weights[0] > 0.01 && u.uBurn.value < 0.999;
-    this.mesh.position.set(0, 0.3, 0);
+    this.mesh.position.set(0, 0.3 + f.heroLift, 0);
     if (f.aspect !== this.lastAspect) {
       this.lastAspect = f.aspect;
       this.fit(f.camera, f.aspect < 1 ? 17 * 1.55 : f.aspect < 1.35 ? 17 * 1.2 : 17);

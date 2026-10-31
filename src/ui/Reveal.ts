@@ -30,7 +30,7 @@ export function initReveal(hooks: RevealHooks, reduced: boolean) {
       start: 'top 88%',
       once: true,
       onEnter: (batch) =>
-        gsap.to(batch, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, overwrite: true }),
+        gsap.to(batch, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, overwrite: 'auto' }),
     });
   }
 
@@ -192,6 +192,7 @@ export function initReveal(hooks: RevealHooks, reduced: boolean) {
   if (!reduced) {
     $$('.dream').forEach((d, i) => {
       gsap.fromTo(d, { y: 80 + i * 40 }, { y: -60 - i * 30, ease: 'none', scrollTrigger: { trigger: d, start: 'top bottom', end: 'bottom top', scrub: true } });
+      gsap.from(d, { opacity: 0, duration: 1.4, ease: 'power2.out', scrollTrigger: { trigger: d, start: 'top 85%', once: true } });
     });
     gsap.utils.toArray<HTMLElement>('.sec-head').forEach((h) => {
       gsap.to(h, { yPercent: -18, ease: 'none', scrollTrigger: { trigger: h, start: 'top top+=10%', end: 'bottom top', scrub: true } });

@@ -40,7 +40,7 @@ function secHead(s: Stage, title: string, sub: string, extra = '') {
       <span class="sec-line" aria-hidden="true"></span>
       <span class="sec-dragon">${esc(s.dragon)} · ${esc(s.epithet)}</span>
     </div>
-    <h2 id="${s.id}-title" class="sec-title" data-split>${esc(title)}</h2>
+    <h2 id="${s.id}-title" class="sec-title" data-split style="--len:${title.length}">${esc(title)}</h2>
     <p class="sec-sub">${esc(sub)}</p>${extra}
   </header>`;
 }
@@ -335,7 +335,7 @@ function dreams() {
   return `<section ${stageAttrs(s)}>
   ${secHead(s, DREAMS_INTRO.title, DREAMS_INTRO.sub)}
   <ol class="dreams">${DREAMS.map(
-    (d, i) => `<li class="dream dream--${d.id}" data-reveal style="--i:${i}">
+    (d, i) => `<li class="dream dream--${d.id}" style="--i:${i}">
       <span class="dream-star" aria-hidden="true"></span>
       <p class="dream-label mono">${esc(d.label)}</p>
       <h3 data-split>${esc(d.title)}</h3>

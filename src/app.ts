@@ -32,6 +32,7 @@ import { initProjectArt } from './ui/ProjectArt';
 import { initReveal } from './ui/Reveal';
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const params = new URLSearchParams(location.search);
 /** `?stage=N` pins the camera on one dragon (development/screenshots). */
@@ -107,7 +108,18 @@ export async function boot() {
       loader.line('compile :: glsl programs (spine, skin, sky, post)');
       await engine.compile();
       loader.line('compile :: done', true);
-      window.addEventListener('resize', () => engine?.resize());
+      // phones: the URL bar sliding in/out changes the height a little —
+      // the canvas is sized to 100lvh, so only real resizes rebuild targets
+      let lastW = window.innerWidth;
+      let lastH = window.innerHeight;
+      window.addEventListener('resize', () => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        if (quality.touch && w === lastW && Math.abs(h - lastH) < 160) return;
+        lastW = w;
+        lastH = h;
+        engine?.resize();
+      });
     } catch (error) {
       console.warn('[kg] WebGL disabled:', error);
       engine = null;
@@ -291,7 +303,7 @@ export async function boot() {
       engine.sky.material.uniforms.uHobbyB.value.copy(b);
       props?.gridColors.a.copy(a);
       props?.gridColors.b.copy(b);
-      engine.frame({ time, dt, rawDt, stage, locals: scroll.local, chapter, velocity: scroll.velocity, pointer: pointerSmooth });
+      engine.frame({ time, dt, rawDt, scrollY: scroll.y, stage, locals: scroll.local, chapter, velocity: scroll.velocity, pointer: pointerSmooth });
     }
     hud.update(scroll.progress, engine ? engine.camera.position.y : scroll.progress * 420, engine?.fps ?? 60, time);
     // music hobby: melody + live equaliser

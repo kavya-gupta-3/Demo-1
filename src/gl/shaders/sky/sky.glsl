@@ -102,7 +102,8 @@ vec3 skyAurum(vec3 d) {
 
 vec3 skyAstra(vec3 d) {
   vec3 c = vec3(0.004, 0.002, 0.012);
-  float n = fbm(d * 1.6 + vec3(0.0, uTime * 0.01, 0.0));
+  // value-noise fbm: a fraction of simplex's cost at full screen
+  float n = fbmLite(d * 1.6 + vec3(0.0, uTime * 0.01, 0.0)) + fbmLite(d * 3.3 + 4.0) * 0.4;
   float n2 = fbmLite(d * 4.0 + n);
   c += mix(vec3(0.25, 0.05, 0.45), vec3(0.85, 0.2, 0.55), sat(n2 + 0.5)) * pow(sat(n + 0.35), 2.6) * 0.2;
   c += vec3(0.1, 0.25, 0.6) * pow(sat(-n + 0.1), 3.0) * 0.1;

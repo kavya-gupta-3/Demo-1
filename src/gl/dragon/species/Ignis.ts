@@ -70,7 +70,7 @@ export class Ignis extends Dragon {
     this.flow = damp(this.flow, speedBoost, 3, ctx.dt);
     this.uHead += dt * (2.4 + this.flow * 2 + this.rage * 4);
     const wide = ctx.aspect < 1 ? 0.55 : ctx.aspect < 1.4 ? 0.78 : 1;
-    this.center.set(center.x + lerp(0, 6.2 * wide, k), center.y + lerp(0.55, 0.6, k), center.z + lerp(0, -3, k));
+    this.center.set(center.x + lerp(0, 6.2 * wide, k), center.y + lerp(0.55, 0.6, k) + ctx.heroLift * (1 - k), center.z + lerp(0, -3, k));
     const rx = lerp(9.4 * wide + 0.4, 5.2 * wide + 0.8, k);
     const rz = lerp(5.2, 4.2, k);
     const roll = lerp(0.04, 0.55, k);
